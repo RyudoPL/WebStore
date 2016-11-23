@@ -1,0 +1,35 @@
+﻿@model IEnumerable<WebStore.Models.Product>
+@using WebStore.Infrastructure
+
+
+@foreach (var product in Model)
+{
+    <div class="item  col-xs-4 col-lg-4">
+        <div class="thumbnail">
+            <a href="@Url.Action("Details", "Category", new { id = product.ProductId})">
+            <img class="group list-group-image" src="@Url.IconsPath(product.ImageFileName)" alt="" />
+                </a>
+            <div class="caption">
+                <h4 class="group inner list-group-item-heading">
+                    @product.ProductName
+                </h4>
+                <p class="group inner list-group-item-text">
+                    @product.ShortDescription
+                </p>
+                <div class="row">
+                    <div class="col-xs-12 col-md-6">
+                        <p class="lead">
+                            @product.ProductPrice
+                        </p>
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        <a class="btn btn-success" href="@Url.Action("AddToCart", "Cart", new { id = product.ProductId})">Add to cart</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+

@@ -1,0 +1,185 @@
+﻿@model WebStore.ViewModels.ManageCredentialsViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_ManageLayout.cshtml";
+}
+
+<!-- Edit Profile -->
+<hr />
+<div class="container">
+    <h1>Edit Profile</h1>
+    <hr>
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-3">
+            <div class="text-center">
+                <img src="//placehold.it/100" class="avatar img-circle" alt="avatar">
+                <h6>Upload a different photo...</h6>
+
+                <input type="file" class="form-control">
+            </div>
+        </div>
+
+        <!-- edit form column -->
+        <div class="col-md-9 personal-info">
+            <div class="alert alert-info alert-dismissable">
+                <a class="panel-close close" data-dismiss="alert">×</a>
+                <i class="fa fa-coffee"></i>
+                This is an <strong>.alert</strong>. Use this to show important messages to the user.
+            </div>
+            <h3>Personal info</h3>
+
+            <form id="userdata-address-table" class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">First name:</label>
+                    <div class="col-lg-8">
+                        <input class="form-control" type="text" value="@Html.ValueFor(o => o.UserData.Name)">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">Last name:</label>
+                    <div class="col-lg-8">
+                        <input class="form-control" type="text" value="@Html.ValueFor(o => o.UserData.Surname)">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">Company:</label>
+                    <div class="col-lg-8">
+                        <input class="form-control" type="text" value="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">Email:</label>
+                    <div class="col-lg-8">
+                        <input class="form-control" type="text" value="@Html.ValueFor(o => o.UserData.Email)">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">Address:</label>
+                    <div class="col-lg-8">
+                        <input class="form-control" type="text" value="@Html.ValueFor(o => o.UserData.Address)">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">City:</label>
+                    <div class="col-lg-8">
+                        <input class="form-control" type="text" value="@Html.ValueFor(o => o.UserData.City)">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">Zip code:</label>
+                    <div class="col-lg-8">
+                        <input class="form-control" type="text" value="@Html.ValueFor(o => o.UserData.ZipCode)">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">Phone number:</label>
+                    <div class="col-lg-8">
+                        <input class="form-control" type="text" value="@Html.ValueFor(o => o.UserData.PhoneNumber)">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">Time Zone:</label>
+                    <div class="col-lg-8">
+                        <div class="ui-select">
+                            <select id="user_time_zone" class="form-control">
+                                <option value="Hawaii">(GMT-10:00) Hawaii</option>
+                                <option value="Alaska">(GMT-09:00) Alaska</option>
+                                <option value="Pacific Time (US &amp; Canada)">(GMT-08:00) Pacific Time (US &amp; Canada)</option>
+                                <option value="Arizona">(GMT-07:00) Arizona</option>
+                                <option value="Mountain Time (US &amp; Canada)">(GMT-07:00) Mountain Time (US &amp; Canada)</option>
+                                <option value="Central Time (US &amp; Canada)" selected="selected">(GMT-06:00) Central Time (US &amp; Canada)</option>
+                                <option value="Eastern Time (US &amp; Canada)">(GMT-05:00) Eastern Time (US &amp; Canada)</option>
+                                <option value="Indiana (East)">(GMT-05:00) Indiana (East)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">Username:</label>
+                    <div class="col-md-8">
+                        <input class="form-control" type="text" value="@Html.ValueFor(o => o.UserData.Email)">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label"></label>
+                    <div class="col-md-8">
+                        <input type="submit" class="btn btn-primary submitLink" value="Save Changes">
+                        <span></span>
+                        <input type="reset" class="btn btn-default" value="Cancel">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<hr/>
+
+<!-- Change password -->
+<p class="text-center">Use the form below to change your password. Your password cannot be the same as your username.</p>
+@using (Html.BeginForm("ChangePassword", "Manage", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div class="manage-error">
+        @Html.ValidationMessage("password-error", "")
+    </div>
+
+    if (Model.Message.HasValue)
+    {
+        <div class="manage-message">
+            @switch (Model.Message)
+            {
+                case WebStore.Controllers.ManageController.ManageMessageId.ChangePasswordSuccess:
+                    @: Password was changed.
+                    break;
+                case WebStore.Controllers.ManageController.ManageMessageId.Error:
+                    @: Error.
+                    break;
+            }
+        </div>
+    }
+
+    <table id="password-table" style="margin-left:auto; margin-right: auto">
+        <tr>
+            <td>@Html.LabelFor(o => o.ChangePasswordViewModel.OldPassword, "Old password: ")</td>
+            <td>
+                @Html.PasswordFor(o => o.ChangePasswordViewModel.OldPassword)
+                <div class="login-validation-message">
+                    @Html.ValidationMessageFor(o => o.ChangePasswordViewModel.OldPassword)
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(o => o.ChangePasswordViewModel.NewPassword, "New password: ")</td>
+            <td>
+                @Html.PasswordFor(o => o.ChangePasswordViewModel.NewPassword)
+                <div class="login-validation-message">
+                    @Html.ValidationMessageFor(o => o.ChangePasswordViewModel.NewPassword)
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(o => o.ChangePasswordViewModel.ConfirmPassword, "Confirm new password: ")</td>
+            <td>
+                @Html.PasswordFor(o => o.ChangePasswordViewModel.ConfirmPassword)
+                <div class="login-validation-message">
+                    @Html.ValidationMessageFor(o => o.ChangePasswordViewModel.ConfirmPassword)
+                </div>
+            </td>
+        </tr>
+        <tr style="text-align: right;">
+            <td></td>
+            <td colspan="3">
+                <div class="checkbox" style="margin-bottom:10px"></div>
+                <input type="submit" class="tn btn-primary btn-load btn-lg" data-loading-text="Changing Password..." value="Change Password">
+            </td>
+        </tr>
+    </table>
+}
+
+@section Scripts
+{
+<script src="~/scripts/jquery-1.12.4.js"></script>
+<script src="~/scripts/jquery.validate.js"></script>
+<script src="~/scripts/jquery.validate.unobtrusive.js"></script>
+}

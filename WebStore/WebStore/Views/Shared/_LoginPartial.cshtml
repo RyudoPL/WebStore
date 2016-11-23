@@ -1,0 +1,29 @@
+﻿@using Microsoft.AspNet.Identity
+
+<ul class="dropdown-menu">
+    @if (Request.IsAuthenticated)
+    {
+        @Html.AntiForgeryToken()
+        <li><a href="#">@Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })</a></li>
+        <li>
+            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+            {
+                @Html.AntiForgeryToken()
+                <a id="logout" href="javascript:document.getElementById('logoutForm').submit()">Log Off</a>
+                <script>
+                    var l = document.getElementById('logout');
+                    if (typeof (l) != 'undefined' && l != null)
+                        l.style.display = "inline";
+                </script>
+                <noscript>
+                    <input type="submit" value="Log Off" />
+                </noscript>
+            }
+        </li>
+        }
+        else
+        {
+        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+        <li> @Html.ActionLink("Login", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+        }
+    </ul>

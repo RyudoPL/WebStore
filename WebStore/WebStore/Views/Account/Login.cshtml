@@ -1,0 +1,64 @@
+﻿@model WebStore.ViewModels.LoginViewModel
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="separator"></div>
+@using (Html.BeginForm("Login", "Account", new { returnUrl = ViewBag.ReturnUrl }, FormMethod.Post))
+{
+    <div class="container">
+        <div class="row vertical-offset-100">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Please sign in</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form accept-charset="UTF-8" role="form">
+                            <fieldset>
+                                @Html.AntiForgeryToken()
+                                <div id="login-error">
+                                    @Html.ValidationMessage("loginerror", "")
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="E-mail" name="email" type="text" value="@Html.ValueFor(o => o.Email)">
+
+                                    <div class="login-validation-message">
+                                        @Html.ValidationMessageFor(o => o.Email)
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="Password" name="password" type="password" value="@Html.ValueFor(o => o.Password)">
+
+                                    <div class="login-validation-message">
+                                        @Html.ValidationMessageFor(o => o.Password)
+                                    </div>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        @Html.CheckBoxFor(m => m.RememberMe, new { @checked = "checked" })
+                                        @Html.LabelFor(m => m.RememberMe)
+                                    </label>
+                                </div>
+                                <input class="btn btn-lg btn-success btn-block" type="submit" value="Login">
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center;">
+            <a href="@Url.Action("Register")">
+                I don't have an account.
+            </a>
+        </div>
+    </div>
+}
+
+@section Scripts
+{
+    <script src="~/scripts/jquery-1.12.4.js"></script>
+    <script src="~/scripts/jquery.validate.js"></script>
+    <script src="~/scripts/jquery.validate.unobtrusive.js"></script>
+}

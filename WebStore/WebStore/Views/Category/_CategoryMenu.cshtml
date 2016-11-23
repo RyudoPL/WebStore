@@ -1,0 +1,19 @@
+﻿@model IEnumerable<WebStore.Models.Category>
+
+
+    <!--    1/6 of screen width - navigation panel on the left-->
+    <div class="col-md-2">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <center>Select a category</center>
+            </div>
+        </div>
+        <ul class="nav nav-pills nav-stacked">
+            @foreach (var category in Model)
+            {
+                <li role="presentation">
+                    <a href="@Url.Action("List", "Category", new { categoryName = category.CategoryName.ToLower() })"><center>@category.CategoryName</center></a>
+                </li>
+            }
+        </ul>
+    </div>

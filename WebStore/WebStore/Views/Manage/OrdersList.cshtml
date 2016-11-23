@@ -1,0 +1,104 @@
+﻿@model  IEnumerable<WebStore.Models.Order>
+@{
+    ViewBag.Title = "OrdersList";
+    Layout = "~/Views/Shared/_ManageLayout.cshtml";
+}
+
+<div>
+    <hr />
+    <h2 class="manageHeader">Your orders:</h2>
+
+    <div>
+        @if (Model.Any())
+        {
+            <table id="orders-table" class="table-responsive">
+                @foreach (var order in Model)
+                {
+                    <tr @if (order.OrderState == WebStore.Models.OrderState.New) { <text> class="newOrder" </text>     }>
+                        <td>
+                            <strong>Order Id: </strong>@order.OrderId
+                        </td>
+                        <td>
+                            <strong>Date: </strong>
+                            @order.DateAdded.ToString("dd-MM-yyyy")
+                        </td>
+                        <td>
+                            <strong>Status: </strong><br />
+
+                            @if (ViewBag.UserIsAdmin)
+                            {
+                                using (Html.BeginForm("ChangeOrderStatus", "Manage"))
+                                {
+                                    @Html.HiddenFor(o => order.OrderId)
+                                    @Html.EnumDropDownListFor(o => order.OrderState, new { @class = "ChangeOrderStatus" })
+                                }
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(o => order.OrderState)
+                            }
+                        </td>
+                        <td>
+                            <strong>Delivery details: </strong><br />
+                            @order.CustomerName @order.CustomerSurname<br />
+                            @order.Adress<br />
+                            @order.ZipCode @order.City<br />
+                        </td>
+                        <td>
+                            <strong>Comment: </strong><br />
+                            @order.Comment
+                        </td>
+                        <td>
+                            <strong>Total value: </strong>@order.OrderValue USD
+                        </td>
+                    </tr>
+                    <tr>
+                        @foreach (var orderItem in order.OrderDetails)
+                        {
+                            <td>@orderItem.OrderId</td>
+                            <td><a href="@Url.Action("Details","Category", new { id = orderItem.ProductId})">
+                            <img class="product" src="@Url.Content("~/Prototype/img/" + orderItem.product.ImageFileName)" /> @orderItem.product.ProductName</a></td>
+                            <td>@orderItem.product.ProductMerchant</td>
+                            <td>@orderItem.EndPrice</td>
+                            <td><span class="label label-info">Processing...</span></td>
+                        }
+                    </tr>
+
+                }
+            </table>
+        }
+        else
+        {
+            <div style="text-align: center; margin-top: 50px; margin-bottom: 50px">
+                You don't have any orders.
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        $(".ChangeOrderStatus").on('change', function(e)
+        {
+            //e.preventDefault();
+
+            var f = $(this.form);
+            var tr = f.closest("tr");
+            var action = f.attr("action");
+            var serializedForm = f.serialize();
+
+            $.post(action,serializedForm).done(function(data)
+            {
+                if(data == '@WebStore.Models.OrderState.New.ToString()')
+                {
+                    tr.addClass("newOrder")
+                }
+                else
+                {
+                    tr.removeClass("newOrder");
+                }
+            });
+        }); 
+    </script>
+}

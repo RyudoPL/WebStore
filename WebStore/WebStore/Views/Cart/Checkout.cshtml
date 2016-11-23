@@ -1,0 +1,60 @@
+﻿@model WebStore.Models.Order
+@{
+    ViewBag.Title = "Checkout";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Checkout", "Cart"))
+{
+    <table id="checkout-address-table">
+        <tr>
+            <td>@Html.LabelFor(o => o.CustomerName, "Name: ")</td>
+            <td>@Html.TextBoxFor(o => o.CustomerName)</td>
+            <td>@Html.ValidationMessageFor(o => o.CustomerName)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(o => o.CustomerSurname, "Surname: ")</td>
+            <td>@Html.TextBoxFor(o => o.CustomerSurname)</td>
+            <td>@Html.ValidationMessageFor(o => o.CustomerSurname)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(o => o.Adress, "Address: ")</td>
+            <td>@Html.TextBoxFor(o => o.Adress)</td>
+            <td>@Html.ValidationMessageFor(o => o.Adress)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(o => o.City, "City: ")</td>
+            <td>@Html.TextBoxFor(o => o.City)</td>
+            <td>@Html.ValidationMessageFor(o => o.City)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(o => o.ZipCode, "Zip code: ")</td>
+            <td>@Html.TextBoxFor(o => o.ZipCode)</td>
+            <td>@Html.ValidationMessageFor(o => o.ZipCode)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(o => o.PhoneNumber, "Phone number: ")</td>
+            <td>@Html.TextBoxFor(o => o.PhoneNumber)</td>
+            <td>@Html.ValidationMessageFor(o => o.PhoneNumber)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(o => o.Email, "E-mail: ")</td>
+            <td>@Html.TextBoxFor(o => o.Email)</td>
+            <td>@Html.ValidationMessageFor(o => o.Email)</td>
+        </tr>
+        <tr>
+            <td><label for="comment">Comments</label></td>
+            <td>
+                <textarea cols="40" rows="3" name="comment">@Model.Comment</textarea>
+            </td>
+        </tr>
+    </table>
+
+    @Html.ValidationSummary()
+    <hr style="margin-bottom: 50px;" />
+    <div class="setion-button-container">
+        <a class="button-link" href="@Url.Action("Index", "Cart")">Return</a>
+        <input type="submit" class="button-link" style="" value="Confirm" />
+    </div>
+}
+

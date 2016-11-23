@@ -1,0 +1,111 @@
+﻿@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    @Html.Action("CategoryMenu")
+
+    <div class="col-md-10">
+        <div class="breadcrumb">
+            @Html.MvcSiteMap().SiteMapPath()
+        </div>
+        <div class="container-fluid">
+            <div class="well well-sm">
+                <strong>Category Title</strong>
+                <div class="btn-group">
+                    <a href="#" id="list" class="btn btn-default btn-sm">
+                        <span class="glyphicon glyphicon-th-list">
+                        </span>List
+                    </a> <a href="#" id="grid" class="btn btn-default btn-sm">
+                        <span class="glyphicon glyphicon-th"></span>Grid
+                    </a>
+                </div>
+            </div>
+            <form id="search-form" method="get" data-ajax="true" data-ajax-target="#products">
+                <input id="search-filter" type="search" name="searchQuery" data-autocomplete-source="@Url.Action("ProductsFilter","Category")" placeholder="Filter product" />
+                <input type="submit" value="Submit" />
+            </form>
+            <div id="products" class="row list-group">
+                @Html.Partial("_ProductList")
+            </div>
+        </div>
+        <nav aria-label="Page navigation">
+            <center>
+                <ul class="pagination">
+                    <li>
+                        <a href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="active"><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                    <li>
+                        <a href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </center>
+        </nav>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        $(function () {
+            var setupAutoComplete = function () {
+                var $input = $(this);
+                var options =
+                    {
+                        source: $input.attr("data-autocomplete-source"),
+                        select: function(event,ui)
+                         {
+                             $input = $(this);
+                             $input.val(ui.item.label);
+                             var $form = $input.parents("form:first");
+                             $form.submit();
+                         }
+                    };
+                $input.autocomplete(options);
+            };
+
+            /*var ajaxSubmit = function () {
+                var $form = $(this);
+
+                var settings =
+                    {
+                        data: $(this).serialize(),
+                        url: $(this).attr("action"),
+                        type: $(this).attr("method")
+                    };
+
+                $ajax(settings).done(function (result) {
+                    var $targetElement = $($form.data("ajax-target"));
+                    var $newContent = $(result);
+                    $($targetElement).replaceWith($newContent);
+                    $newContent.effect("slide");
+                });
+
+                return false;
+            };*/
+            //var availableTag = ["Harry Potter", "rg"];
+            //$("#search-filter").autocomplete({ source: availableTag });
+            $("#search-filter").each(setupAutoComplete);
+            //$("#search-form").submit(ajaxSubmit);
+        })
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+            $('#list').click(function (event) { event.preventDefault(); $('#products .item').addClass('list-group-item'); });
+            $('#grid').click(function (event) { event.preventDefault(); $('#products .item').removeClass('list-group-item'); $('#products .item').addClass('grid-group-item'); });
+        });
+    </script>
+}
+

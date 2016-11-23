@@ -1,0 +1,64 @@
+﻿@model WebStore.ViewModels.RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="separator"></div>
+@using (Html.BeginForm("Register", "Account"))
+{
+    <div class="container">
+        <div class="row vertical-offset-100">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Please register</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form accept-charset="UTF-8" role="form">
+                            <fieldset>
+                                @Html.AntiForgeryToken()
+                                <div id="login-error">
+                                    @Html.ValidationMessage("loginerror", "")
+                                    @Html.ValidationSummary()
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="E-mail" name="email" type="text" value="@Html.ValueFor(o => o.Email)">
+
+                                    <div class="login-validation-message">
+                                        @Html.ValidationMessageFor(o => o.Email)
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="Password" name="password" type="password" value="@Html.ValueFor(o => o.Password)">
+
+                                    <div class="login-validation-message">
+                                        @Html.ValidationMessageFor(o => o.Password)
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="Confirm your password" name="Password confirmation" type="password" value="@Html.ValueFor(o => o.ConfirmPassword)">
+
+                                    <div class="login-validation-message">
+                                        @Html.ValidationMessageFor(o => o.ConfirmPassword)
+                                    </div>
+                                </div>
+                                <input class="btn btn-lg btn-success btn-block" type="submit" value="Register">
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts
+{
+    <script src="~/scripts/jquery-1.12.4.js"></script>
+    <script src="~/scripts/jquery.validate.js"></script>
+    <script src="~/scripts/jquery.validate.unobtrusive.js"></script>
+}
+
+
